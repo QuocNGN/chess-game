@@ -4,8 +4,8 @@ hide circle
 class Board {
   - cells: Cell[][]
   + moveChessPiece(chessPiece: ChessPieceBase, destinationCell: Cell)
-  - checkEndGame()
-  - setUpBoard(chessPieces: ChessPieceBase[])
+  + checkEndGame()
+  + setUpBoard(chessPieces: ChessPieceBase[])
 }
 
 class Cell {
@@ -17,6 +17,7 @@ class Cell {
 }
 
 class Player {
+  - color: string
   - moveChessPiece(chessPiece: ChessPieceBase, destinationCell: Cell)
   - undoMove()
   - redoMove()
@@ -24,8 +25,34 @@ class Player {
 
 class ChessPieceBase {
   - moveStrategies: IMoveStrategy[]
+  - player: Player
   + setPlayer(player: Player)
   + checkAvailableMoveCells()
+  + doMove()
+  + canMoveTo(cell: Cell): boolean
+}
+
+class Pawn extends ChessPieceBase {
+  + doMove()
+}
+
+class Knight extends ChessPieceBase {
+  + doMove()
+}
+
+class Bishop extends ChessPieceBase {
+  + doMove()
+}
+
+class Rook extends ChessPieceBase {
+  + doMove()
+}
+
+class Queen extends ChessPieceBase {
+  + doMove()
+}
+
+class King extends ChessPieceBase {
   + doMove()
 }
 
@@ -75,6 +102,12 @@ class HistoryMove {
   - destinationCell: Cell
 }
 
+class SpecialMoveManager {
+  + checkCastling(chessPiece: ChessPieceBase)
+  + checkEnPassant(chessPiece: ChessPieceBase)
+  + checkPawnPromotion(chessPiece: ChessPieceBase)
+}
+
 ChessPieceBase -down-o IMoveStrategy
 
 Board -down-o Cell
@@ -89,5 +122,14 @@ Game -down-o Player
 
 Player .up.> Board
 Player .up.> Game
+
+Player -down-> ChessPieceBase
+ChessPieceBase -down-> Pawn
+ChessPieceBase -down-> Knight
+ChessPieceBase -down-> Bishop
+ChessPieceBase -down-> Rook
+ChessPieceBase -down-> Queen
+ChessPieceBase -down-> King
+Game -down-> SpecialMoveManager
 
 @enduml
